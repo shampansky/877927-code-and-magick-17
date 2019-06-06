@@ -45,13 +45,12 @@ var renderColumn = function (ctx, name, time, maxTime, colNumber) {
   var currentTime = Math.round(time);
   var xPos = CLOUD_X + COL_WIDTH + (COL_WIDTH + COL_GAP) * colNumber;
   var yPos = 90 + COL_HEIGHT - currentColHeight;
-  var randomColor = getRandomColor();
 
   // Выводим время игрока
   ctx.fillText(currentTime, xPos, yPos);
 
   // Выводим цветную колонку
-  ctx.fillStyle = addColorStyle(name, randomColor);
+  ctx.fillStyle = addColorStyle(name, getRandomColor());
   ctx.fillRect(xPos, yPos + GAP_10, COL_WIDTH, currentColHeight);
 
   // Выводим имя игрока
