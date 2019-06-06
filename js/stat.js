@@ -32,6 +32,33 @@ var getMaxElement = function (elements) {
   return maxElement;
 };
 
+var getRandomColor = function () {
+  return 'hsl(240,' + Math.round(Math.random() * 100) + '%, 50%)';
+};
+
+var addColorStyle = function (name, color) {
+  return name === 'Вы' ? 'rgba(255, 0, 0, 1)' : color;
+};
+
+var renderColumn = function (ctx, name, time, maxTime, colNumber) {
+  var currentColHeight = (COL_HEIGHT * time) / maxTime;
+  var currentTime = Math.round(time);
+  var xPos = CLOUD_X + COL_WIDTH + (COL_WIDTH + COL_GAP) * colNumber;
+  var yPos = 90 + COL_HEIGHT - currentColHeight;
+  var randomColor = getRandomColor();
+
+  // Выводим время игрока
+  ctx.fillText(currentTime, xPos, yPos);
+
+  // Выводим цветную колонку
+  ctx.fillStyle = addColorStyle(name, randomColor);
+  ctx.fillRect(xPos, yPos + GAP_10, COL_WIDTH, currentColHeight);
+
+  // Выводим имя игрока
+  ctx.fillStyle = '#000000';
+  ctx.fillText(name, xPos, yPos + GAP_10 + currentColHeight + FONT_SIZE);
+};
+
 window.renderStatistics = function (ctx, names, times) {
   // Создаем облако
   renderCloud(ctx, CLOUD_X + GAP_10, CLOUD_Y + GAP_10, 'rgba(0, 0, 0, 0.7)');
@@ -48,25 +75,7 @@ window.renderStatistics = function (ctx, names, times) {
 
   // Генерируем колонки для каждого игрока
   for (var i = 0; i < names.length; i++) {
-    var currentColHeight = (COL_HEIGHT * times[i]) / maxTime;
-    var currentTime = Math.round(times[i]);
-    var xPos = CLOUD_X + COL_WIDTH + (COL_WIDTH + COL_GAP) * i;
-    var yPos = 90 + COL_HEIGHT - currentColHeight;
-    var randomColor = 'hsl(240,' + Math.round(Math.random() * 100) + '%, 50%)';
-
-    // Почему-то вызывает ошибку в линтере
-    // names[i] === 'Вы' ? ctx.fillStyle = 'rgba(255, 0, 0, 1)' : ctx.fillStyle = randomColor;
-
-    ctx.fillText(currentTime, xPos, yPos);
-    if (names[i] === 'Вы') {
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-    } else {
-      ctx.fillStyle = randomColor;
-    }
-
-    ctx.fillRect(xPos, yPos + GAP_10, COL_WIDTH, currentColHeight);
-    ctx.fillStyle = '#000000';
-    ctx.fillText(names[i], xPos, yPos + GAP_10 + currentColHeight + FONT_SIZE);
+    renderColumn(ctx, names[i], times[i], maxTime, i);
   }
 
 };
