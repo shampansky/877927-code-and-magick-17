@@ -127,9 +127,9 @@ for (var j = 0; j < wizards.length; j++) {
 
 similarListElement.appendChild(fragment);
 
-var setup = document.querySelector('.setup');
+var elemSetup = document.querySelector('.setup');
 var setupOpen = document.querySelector('.setup-open');
-var setupClose = setup.querySelector('.setup-close');
+var setupClose = elemSetup.querySelector('.setup-close');
 var userName = document.querySelector('.setup-user-name');
 var wizardCoat = document.querySelector('.setup-wizard .wizard-coat');
 var wizardCoatInput = document.querySelector('input[name="coat-color"]');
@@ -138,7 +138,6 @@ var wizardEyesInput = document.querySelector('input[name="eyes-color"]');
 var wizardFireball = document.querySelector('.setup-fireball-wrap');
 var wizardFireballInput = document.querySelector('input[name="fireball-color"]');
 
-// console.log(wizardCoat);
 var onPopupEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE && document.activeElement !== userName) {
     closePopup();
@@ -146,12 +145,12 @@ var onPopupEscPress = function (evt) {
 };
 
 var openPopup = function () {
-  setup.classList.remove('hidden');
+  elemSetup.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
 };
 
 var closePopup = function () {
-  setup.classList.add('hidden');
+  elemSetup.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
 };
 
