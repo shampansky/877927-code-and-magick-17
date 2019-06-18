@@ -1,5 +1,8 @@
 'use strict';
 
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 var WIZARD_FIRST_NAMES = [
   'Иван',
   'Хуан Себастьян',
@@ -39,13 +42,21 @@ var EYE_COLORS = [
   'green'
 ];
 
+var FIREBALL_COLORS = [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848'
+];
+
 var WIZARDS_NUMBER = 4;
 
 var wizards = [];
 
 // Показываем окно с настройками волшебника
-var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
+// var userDialog = document.querySelector('.setup');
+// userDialog.classList.remove('hidden');
 
 // Показываем похожих волшебников в окне с настройками волшебника
 document.querySelector('.setup-similar').classList.remove('hidden');
@@ -80,6 +91,11 @@ var getRandomEyeColor = function () {
   return EYE_COLORS[getRandomArrayNumber(EYE_COLORS)];
 };
 
+// Генерация случайного цвета файербола из массива
+var getFireballColor = function () {
+  return FIREBALL_COLORS[getRandomArrayNumber(FIREBALL_COLORS)];
+};
+
 // Генерируем массив с объектами волшебников
 for (var i = 0; i < WIZARDS_NUMBER; i++) {
   var randomWizard = {
@@ -110,3 +126,74 @@ for (var j = 0; j < wizards.length; j++) {
 }
 
 similarListElement.appendChild(fragment);
+
+var elemSetup = document.querySelector('.setup');
+var elemSetupOpen = document.querySelector('.setup-open');
+var elemSetupClose = elemSetup.querySelector('.setup-close');
+var elemUserName = document.querySelector('.setup-user-name');
+var elemWizardCoat = document.querySelector('.setup-wizard .wizard-coat');
+var elemWizardCoatInput = document.querySelector('input[name="coat-color"]');
+var elemWizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
+var elemWizardEyesInput = document.querySelector('input[name="eyes-color"]');
+var elemWizardFireball = document.querySelector('.setup-fireball-wrap');
+var elemWizardFireballInput = document.querySelector('input[name="fireball-color"]');
+
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE && document.activeElement !== elemUserName) {
+    closePopup();
+  }
+};
+
+var openPopup = function () {
+  elemSetup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function () {
+  elemSetup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+
+// Обработчик открытия окна
+elemSetupOpen.addEventListener('click', openPopup);
+
+elemSetupOpen.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openPopup();
+  }
+});
+
+// Обработчик закрытия окна
+elemSetupClose.addEventListener('click', closePopup);
+
+elemSetupClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
+});
+
+var applyRandomFillColor = function (element, elementInput, color) {
+  element.style.fill = color;
+  elementInput.value = color;
+};
+
+var applyRandomBackgroundColor = function (element, elementInput, color) {
+  element.style.background = color;
+  elementInput.value = color;
+};
+
+// Обработчик изменения цвета плаща мага
+elemWizardCoat.addEventListener('click', function () {
+  applyRandomFillColor(elemWizardCoat, elemWizardCoatInput, getRandomCoatColor());
+});
+
+// Обработчик изменения цвета глаз мага
+elemWizardEyes.addEventListener('click', function () {
+  applyRandomFillColor(elemWizardEyes, elemWizardEyesInput, getRandomEyeColor());
+});
+
+// Обработчик изменения цвета файербола мага
+elemWizardFireball.addEventListener('click', function () {
+  applyRandomBackgroundColor(elemWizardFireball, elemWizardFireballInput, getFireballColor());
+});
