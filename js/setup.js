@@ -128,18 +128,18 @@ for (var j = 0; j < wizards.length; j++) {
 similarListElement.appendChild(fragment);
 
 var elemSetup = document.querySelector('.setup');
-var setupOpen = document.querySelector('.setup-open');
-var setupClose = elemSetup.querySelector('.setup-close');
-var userName = document.querySelector('.setup-user-name');
-var wizardCoat = document.querySelector('.setup-wizard .wizard-coat');
-var wizardCoatInput = document.querySelector('input[name="coat-color"]');
-var wizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
-var wizardEyesInput = document.querySelector('input[name="eyes-color"]');
-var wizardFireball = document.querySelector('.setup-fireball-wrap');
-var wizardFireballInput = document.querySelector('input[name="fireball-color"]');
+var elemSetupOpen = document.querySelector('.setup-open');
+var elemSetupClose = elemSetup.querySelector('.setup-close');
+var elemUserName = document.querySelector('.setup-user-name');
+var elemWizardCoat = document.querySelector('.setup-wizard .wizard-coat');
+var elemWizardCoatInput = document.querySelector('input[name="coat-color"]');
+var elemWizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
+var elemWizardEyesInput = document.querySelector('input[name="eyes-color"]');
+var elemWizardFireball = document.querySelector('.setup-fireball-wrap');
+var elemWizardFireballInput = document.querySelector('input[name="fireball-color"]');
 
 var onPopupEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE && document.activeElement !== userName) {
+  if (evt.keyCode === ESC_KEYCODE && document.activeElement !== elemUserName) {
     closePopup();
   }
 };
@@ -156,18 +156,18 @@ var closePopup = function () {
 
 
 // Обработчик открытия окна
-setupOpen.addEventListener('click', openPopup);
+elemSetupOpen.addEventListener('click', openPopup);
 
-setupOpen.addEventListener('keydown', function (evt) {
+elemSetupOpen.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     openPopup();
   }
 });
 
 // Обработчик закрытия окна
-setupClose.addEventListener('click', closePopup);
+elemSetupClose.addEventListener('click', closePopup);
 
-setupClose.addEventListener('keydown', function (evt) {
+elemSetupClose.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     closePopup();
   }
@@ -184,16 +184,16 @@ var applyRandomBackgroundColor = function (element, elementInput, color) {
 };
 
 // Обработчик изменения цвета плаща мага
-wizardCoat.addEventListener('click', function () {
-  applyRandomFillColor(wizardCoat, wizardCoatInput, getRandomCoatColor());
+elemWizardCoat.addEventListener('click', function () {
+  applyRandomFillColor(elemWizardCoat, elemWizardCoatInput, getRandomCoatColor());
 });
 
 // Обработчик изменения цвета глаз мага
-wizardEyes.addEventListener('click', function () {
-  applyRandomFillColor(wizardEyes, wizardEyesInput, getRandomEyeColor());
+elemWizardEyes.addEventListener('click', function () {
+  applyRandomFillColor(elemWizardEyes, elemWizardEyesInput, getRandomEyeColor());
 });
 
 // Обработчик изменения цвета файербола мага
-wizardFireball.addEventListener('click', function () {
-  applyRandomBackgroundColor(wizardFireball, wizardFireballInput, getFireballColor());
+elemWizardFireball.addEventListener('click', function () {
+  applyRandomBackgroundColor(elemWizardFireball, elemWizardFireballInput, getFireballColor());
 });
