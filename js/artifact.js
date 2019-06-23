@@ -1,6 +1,8 @@
 'use strict';
 
 var elemArtifactsItem = document.querySelector('.setup-artifacts-cell').firstElementChild;
+var elemSetupArtifacts = document.querySelector('.setup-artifacts');
+
 
 elemArtifactsItem.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
@@ -27,10 +29,24 @@ elemArtifactsItem.addEventListener('mousedown', function (evt) {
 
     elemArtifactsItem.style.top = (elemArtifactsItem.offsetTop - shift.y) + 'px';
     elemArtifactsItem.style.left = (elemArtifactsItem.offsetLeft - shift.x) + 'px';
+    // Выносим артификт на передний план
+    elemArtifactsItem.style.zIndex = '100';
   };
 
   var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
+
+    // возвращаем артефакт на место, если не попала в инвентарь
+    var elemArtifactsItemRect = elemArtifactsItem.getBoundingClientRect();
+    var elemSetupArtifactsRect = elemSetupArtifacts.getBoundingClientRect();
+
+    if (elemArtifactsItemRect.top + elemArtifactsItemRect.height < elemSetupArtifactsRect.top ||
+        elemArtifactsItemRect.left + elemArtifactsItemRect.width < elemSetupArtifactsRect.left ||
+        elemArtifactsItemRect.left > elemSetupArtifactsRect.left + elemSetupArtifactsRect.width ||
+        elemArtifactsItemRect.top > elemSetupArtifactsRect.top + elemSetupArtifactsRect.height
+    ) {
+      elemArtifactsItem.removeAttribute('style');
+    }
 
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
