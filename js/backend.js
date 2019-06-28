@@ -3,6 +3,7 @@
 (function () {
   var URL_GET = 'https://js.dump.academy/code-and-magick/data';
   var URL_POST = 'https://js.dump.academy/code-and-magick';
+  var SUCCESS = 200;
   window.backend = {
     load: function (onLoad, onError) {
       // Создаем объект запроса
@@ -11,7 +12,7 @@
       xhr.responseType = 'json';
       // Обработчик загруженных данных
       xhr.addEventListener('load', function () {
-        if (xhr.status === 200) {
+        if (xhr.status === SUCCESS) {
           onLoad(xhr.response);
         } else {
           onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -30,7 +31,7 @@
       xhr.responseType = 'json';
       // Обработчик загруженных данных
       xhr.addEventListener('load', function () {
-        if (xhr.status === 200) {
+        if (xhr.status === SUCCESS) {
           onLoad();
         } else {
           onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -39,7 +40,7 @@
       // Открываем соединение
       xhr.open('POST', URL_POST);
       // Отправляем запрос
-      xhr.send();
+      xhr.send(data);
     }
   };
 })();

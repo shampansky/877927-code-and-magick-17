@@ -90,33 +90,11 @@
   // Обработчик отправки формы
   elemSetupForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    // Создаем объект с данными формы
-    var formData = new FormData(elemSetupForm);
-
-    // Переводим данные формы в JSON
-    var formObject = {};
-    formData.forEach(function (value, key) {
-      formObject[key] = value;
-    });
-    var json = JSON.stringify(formObject);
-
     // Обработка успешной отправки формы
     var successHandler = function () {
       closePopup();
     };
 
-    // Обработка отправки формы с ошибками
-    var errorHandler = function (errorMessage) {
-      var node = document.createElement('div');
-      node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-      node.style.position = 'absolute';
-      node.style.left = 0;
-      node.style.right = 0;
-      node.style.fontSize = '30px';
-      node.textContent = errorMessage;
-      document.body.insertAdjacentElement('afterbegin', node);
-    };
-
-    window.backend.save(json, successHandler, errorHandler);
+    window.backend.save(new FormData(evt.target), successHandler, window.handlers.errorHandler);
   });
 })();
