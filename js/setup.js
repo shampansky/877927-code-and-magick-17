@@ -1,28 +1,6 @@
 'use strict';
 
 (function () {
-  var WIZARD_FIRST_NAMES = [
-    'Иван',
-    'Хуан Себастьян',
-    'Мария',
-    'Кристоф',
-    'Виктор',
-    'Юлия',
-    'Люпита',
-    'Вашингтон'
-  ];
-
-  var WIZARD_SECOND_NAMES = [
-    'да Марья',
-    'Верон',
-    'Мирабелла',
-    'Вальц',
-    'Онопко',
-    'Топольницкая',
-    'Нионго',
-    'Ирвинг'
-  ];
-
   var COAT_COLORS = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -50,29 +28,44 @@
 
   var WIZARDS_NUMBER = 4;
 
-  var wizards = [];
+  var successHandler = function (wizards) {
+    // Показываем похожих волшебников в окне с настройками волшебника
+    document.querySelector('.setup-similar').classList.remove('hidden');
 
-  // Показываем похожих волшебников в окне с настройками волшебника
-  document.querySelector('.setup-similar').classList.remove('hidden');
+    // Cписок похожих волшебников в разметке
+    var similarListElement = document.querySelector('.setup-similar-list');
 
-  // Cписок похожих волшебников в разметке
-  var similarListElement = document.querySelector('.setup-similar-list');
+    // Шаблон похожих волшебников
+    var similarWizardTemplate = document.querySelector('#similar-wizard-template')
+    .content
+    .querySelector('.setup-similar-item');
 
-  // Шаблон похожих волшебников
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template')
-  .content
-  .querySelector('.setup-similar-item');
+    // создание волшебника
+    var renderWizard = function (wizard) {
+      var wizardElement = similarWizardTemplate.cloneNode(true);
+
+      wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
+      wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+      wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
+
+      return wizardElement;
+    };
+
+    // Добавляем волшебников в разметку через элемент documentFragment
+    var fragment = document.createDocumentFragment();
+
+    for (var j = 0; j < WIZARDS_NUMBER; j++) {
+      fragment.appendChild(renderWizard(wizards[j]));
+    }
+
+    similarListElement.appendChild(fragment);
+  };
+
+  window.backend.load(successHandler, window.handlers.errorHandler);
 
   // Генерация случайного номера массива
   var getRandomArrayNumber = function (arrayName) {
     return Math.round(Math.random() * (arrayName.length - 1));
-  };
-
-  // Генерация случайного имени из массива
-  var getRandomName = function () {
-    var randomFirstName = WIZARD_FIRST_NAMES[getRandomArrayNumber(WIZARD_FIRST_NAMES)];
-    var randomSecondName = WIZARD_SECOND_NAMES[getRandomArrayNumber(WIZARD_SECOND_NAMES)];
-    return randomFirstName + ' ' + randomSecondName;
   };
 
   // Генерация случайного плаща из массива
@@ -89,37 +82,6 @@
   var getFireballColor = function () {
     return FIREBALL_COLORS[getRandomArrayNumber(FIREBALL_COLORS)];
   };
-
-  // Генерируем массив с объектами волшебников
-  for (var i = 0; i < WIZARDS_NUMBER; i++) {
-    var randomWizard = {
-      name: getRandomName(),
-      coatColor: getRandomCoatColor(),
-      eyesColor: getRandomEyeColor()
-    };
-
-    wizards.push(randomWizard);
-  }
-
-  // создание волшебника
-  var renderWizard = function (wizard) {
-    var wizardElement = similarWizardTemplate.cloneNode(true);
-
-    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
-
-    return wizardElement;
-  };
-
-  // Добавляем волшебников в разметку через элемент documentFragment
-  var fragment = document.createDocumentFragment();
-
-  for (var j = 0; j < wizards.length; j++) {
-    fragment.appendChild(renderWizard(wizards[j]));
-  }
-
-  similarListElement.appendChild(fragment);
 
   var elemWizardCoat = document.querySelector('.setup-wizard .wizard-coat');
   var elemWizardCoatInput = document.querySelector('input[name="coat-color"]');

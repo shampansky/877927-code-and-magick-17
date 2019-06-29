@@ -4,8 +4,8 @@
   var elemSetup = document.querySelector('.setup');
   var elemSetupOpen = document.querySelector('.setup-open');
   var elemSetupClose = elemSetup.querySelector('.setup-close');
+  var elemSetupForm = elemSetup.querySelector('.setup-wizard-form');
   var elemUpload = document.querySelector('.upload');
-  // var elemUserName = document.querySelector('.setup-user-name');
 
   var onPopupEscPress = function (evt) {
     // TODO: отменить действие когда elemUserName в фокусе
@@ -85,5 +85,16 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+  });
+
+  // Обработчик отправки формы
+  elemSetupForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    // Обработка успешной отправки формы
+    var successHandler = function () {
+      closePopup();
+    };
+
+    window.backend.save(new FormData(evt.target), successHandler, window.handlers.errorHandler);
   });
 })();
