@@ -28,6 +28,8 @@
 
   var WIZARDS_NUMBER = 4;
 
+
+
   var successHandler = function (wizards) {
     // Показываем похожих волшебников в окне с настройками волшебника
     document.querySelector('.setup-similar').classList.remove('hidden');
@@ -51,6 +53,12 @@
       return wizardElement;
     };
 
+    var updateWizards = function () {
+      var sameCoatWizards = wizards.filter(function (it) {
+
+      });
+    };
+
     // Добавляем волшебников в разметку через элемент documentFragment
     var fragment = document.createDocumentFragment();
 
@@ -59,60 +67,65 @@
     }
 
     similarListElement.appendChild(fragment);
+
+    // Генерация случайного номера массива
+    var getRandomArrayNumber = function (arrayName) {
+      return Math.round(Math.random() * (arrayName.length - 1));
+    };
+
+    // Генерация случайного плаща из массива
+    var getRandomCoatColor = function () {
+      return COAT_COLORS[getRandomArrayNumber(COAT_COLORS)];
+    };
+
+    // Генерация случайного плаща из массива
+    var getRandomEyeColor = function () {
+      return EYE_COLORS[getRandomArrayNumber(EYE_COLORS)];
+    };
+
+    // Генерация случайного цвета файербола из массива
+    var getFireballColor = function () {
+      return FIREBALL_COLORS[getRandomArrayNumber(FIREBALL_COLORS)];
+    };
+
+    var elemWizardCoat = document.querySelector('.setup-wizard .wizard-coat');
+    var elemWizardCoatInput = document.querySelector('input[name="coat-color"]');
+    var elemWizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
+    var elemWizardEyesInput = document.querySelector('input[name="eyes-color"]');
+    var elemWizardFireball = document.querySelector('.setup-fireball-wrap');
+    var elemWizardFireballInput = document.querySelector('input[name="fireball-color"]');
+
+
+    var applyRandomFillColor = function (element, elementInput, color) {
+      element.style.fill = color;
+      elementInput.value = color;
+    };
+
+    var applyRandomBackgroundColor = function (element, elementInput, color) {
+      element.style.background = color;
+      elementInput.value = color;
+    };
+
+    // Обработчик изменения цвета плаща мага
+    elemWizardCoat.addEventListener('click', function () {
+      applyRandomFillColor(elemWizardCoat, elemWizardCoatInput, getRandomCoatColor());
+      updateWizards();
+    });
+
+    // Обработчик изменения цвета глаз мага
+    elemWizardEyes.addEventListener('click', function () {
+      applyRandomFillColor(elemWizardEyes, elemWizardEyesInput, getRandomEyeColor());
+    });
+
+    // Обработчик изменения цвета файербола мага
+    elemWizardFireball.addEventListener('click', function () {
+      applyRandomBackgroundColor(elemWizardFireball, elemWizardFireballInput, getFireballColor());
+    });
+
   };
+
 
   window.backend.load(successHandler, window.handlers.errorHandler);
 
-  // Генерация случайного номера массива
-  var getRandomArrayNumber = function (arrayName) {
-    return Math.round(Math.random() * (arrayName.length - 1));
-  };
 
-  // Генерация случайного плаща из массива
-  var getRandomCoatColor = function () {
-    return COAT_COLORS[getRandomArrayNumber(COAT_COLORS)];
-  };
-
-  // Генерация случайного плаща из массива
-  var getRandomEyeColor = function () {
-    return EYE_COLORS[getRandomArrayNumber(EYE_COLORS)];
-  };
-
-  // Генерация случайного цвета файербола из массива
-  var getFireballColor = function () {
-    return FIREBALL_COLORS[getRandomArrayNumber(FIREBALL_COLORS)];
-  };
-
-  var elemWizardCoat = document.querySelector('.setup-wizard .wizard-coat');
-  var elemWizardCoatInput = document.querySelector('input[name="coat-color"]');
-  var elemWizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
-  var elemWizardEyesInput = document.querySelector('input[name="eyes-color"]');
-  var elemWizardFireball = document.querySelector('.setup-fireball-wrap');
-  var elemWizardFireballInput = document.querySelector('input[name="fireball-color"]');
-
-
-  var applyRandomFillColor = function (element, elementInput, color) {
-    element.style.fill = color;
-    elementInput.value = color;
-  };
-
-  var applyRandomBackgroundColor = function (element, elementInput, color) {
-    element.style.background = color;
-    elementInput.value = color;
-  };
-
-  // Обработчик изменения цвета плаща мага
-  elemWizardCoat.addEventListener('click', function () {
-    applyRandomFillColor(elemWizardCoat, elemWizardCoatInput, getRandomCoatColor());
-  });
-
-  // Обработчик изменения цвета глаз мага
-  elemWizardEyes.addEventListener('click', function () {
-    applyRandomFillColor(elemWizardEyes, elemWizardEyesInput, getRandomEyeColor());
-  });
-
-  // Обработчик изменения цвета файербола мага
-  elemWizardFireball.addEventListener('click', function () {
-    applyRandomBackgroundColor(elemWizardFireball, elemWizardFireballInput, getFireballColor());
-  });
 })();
